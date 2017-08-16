@@ -8,3 +8,5 @@ target/
 *.zip
 *.tar.gz
 *.rar
+.idea
+.idea/*
