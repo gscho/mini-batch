@@ -1,0 +1,8 @@
+---
+general:
+  type: ~
+reader:
+  type: json
+writer: 
+  type: xml
+  path: ./src/test/kotlin/res/jsonToXml/output.xml

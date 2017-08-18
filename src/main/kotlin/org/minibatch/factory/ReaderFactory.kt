@@ -7,7 +7,7 @@ import org.minibatch.readers.StreamingReader
 
 class ReaderFactory {
     fun getReader(reader: Reader): StreamingReader? {
-        when (reader.type?.toLowerCase()) {
+        when (reader.type.toLowerCase()) {
             "json" -> return JSONStreamingReader(JobQueue.queue)
             else                          -> return null
         }

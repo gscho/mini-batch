@@ -9,7 +9,7 @@ class JSONXmlTransformer: Transformer {
         try {
             return XML.toString(JSONObject(e.toString()))
         } catch (any: org.json.JSONException) {
-            //Not valid JSON
+            //Invalid JSON
             return e.toString()
         }
     }

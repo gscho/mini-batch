@@ -9,16 +9,19 @@ import java.util.stream.Stream
 import java.util.*
 
 
-fun main(args: Array<String>) {
-    val config = ConfigParser().load()
-    val reader = ReaderFactory().getReader(config.reader)!!
-    val transformer = TransformerFactory().getTransformer(config.reader, config.writer)!!
-    val writer = WriterFactory().getWriter(config.writer)!!
-    reader.read()
-    Stream.generate { Optional.ofNullable(JobQueue.queue.poll()) }
-            .filter { e -> e.isPresent }
-            .map { e -> transformer.transform(e.get()) }
-            .forEach { e -> if(e == "POISON") writer.close() else writer.write(e) }
+class MiniBatch {
+    fun main(args: Array<String> = arrayOf("./config.yml")) {
+
+        val config = ConfigParser(args[0]).load()
+        val reader = ReaderFactory().getReader(config.reader)!!
+        val transformer = TransformerFactory().getTransformer(config.reader, config.writer)!!
+        val writer = WriterFactory().getWriter(config.writer)!!
+        reader.read()
+        Stream.generate { Optional.ofNullable(JobQueue.queue.poll()) }
+                .filter { e -> e.isPresent }
+                .map { e -> transformer.transform(e.get()) }
+                .forEach { e -> if (e == "POISON") writer.close() else writer.write(e) }
+
+    }
 
 }
-

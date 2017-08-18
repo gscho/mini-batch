@@ -6,8 +6,8 @@ import org.minibatch.writers.XmlStreamingWriter
 
 class WriterFactory {
     fun getWriter(writer: Writer): StreamingWriter? {
-        when (writer.type?.toLowerCase()) {
-            "xml" -> return XmlStreamingWriter()
+        when (writer.type.toLowerCase()) {
+            "xml" -> return XmlStreamingWriter(writer)
             else -> return null
         }
     }
