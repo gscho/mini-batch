@@ -9,7 +9,7 @@ import kotlinx.coroutines.experimental.delay
 import java.io.InputStreamReader
 import java.util.*
 
-class JSONStreamingReader constructor(val queue: Queue<String>) : StreamingReader {
+class JSONStreamingReader constructor(val queue: Queue<Any>) : StreamingReader {
 
 
     override fun read(){

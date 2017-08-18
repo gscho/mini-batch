@@ -1,0 +1,7 @@
+---
+general:
+  type: ~
+reader:
+  type: json
+writer: 
+  type: xml

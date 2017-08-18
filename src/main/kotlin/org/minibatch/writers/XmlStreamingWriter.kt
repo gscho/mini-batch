@@ -21,8 +21,7 @@ class XmlStreamingWriter : StreamingWriter {
     }
 
 
-    override fun write(json: JSONObject) {
-        val xml = XML.toString(json)
+    override fun write(xml: String) {
         writer.write(xml)
     }
 

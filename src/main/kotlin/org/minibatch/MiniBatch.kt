@@ -1,22 +1,24 @@
 package org.minibatch
 
-import org.json.JSONObject
-import org.minibatch.readers.JSONStreamingReader
-import java.util.Optional
+import org.minibatch.config.ConfigParser
+import org.minibatch.queue.JobQueue
+import org.minibatch.factory.ReaderFactory
+import org.minibatch.factory.TransformerFactory
+import org.minibatch.factory.WriterFactory
 import java.util.stream.Stream
-import java.util.concurrent.LinkedBlockingQueue
-import org.minibatch.writers.XmlStreamingWriter
+import java.util.*
 
 
 fun main(args: Array<String>) {
-    val queue = LinkedBlockingQueue<String>()
-    val reader = JSONStreamingReader(queue)
+    val config = ConfigParser().load()
+    val reader = ReaderFactory().getReader(config.reader)!!
+    val transformer = TransformerFactory().getTransformer(config.reader, config.writer)!!
+    val writer = WriterFactory().getWriter(config.writer)!!
     reader.read()
-    val writer = XmlStreamingWriter()
-    Stream.generate { Optional.ofNullable(queue.poll()) }
+    Stream.generate { Optional.ofNullable(JobQueue.queue.poll()) }
             .filter { e -> e.isPresent }
-            .map { e -> e.get() }
-            .forEach { e -> if(e == "POISON") writer.close() else writer.write(JSONObject(e)) }
+            .map { e -> transformer.transform(e.get()) }
+            .forEach { e -> if(e == "POISON") writer.close() else writer.write(e) }
 
 }
 
